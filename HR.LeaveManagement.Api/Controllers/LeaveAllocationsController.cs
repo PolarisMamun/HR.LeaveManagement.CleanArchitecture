@@ -1,6 +1,7 @@
 ﻿using HR.LeaveManagement.Application.DTOs.LeaveAllocation;
 using HR.LeaveManagement.Application.Features.LeaveAllocations.Requests.Commands;
 using HR.LeaveManagement.Application.Features.LeaveAllocations.Requests.Queries;
+using HR.LeaveManagement.Application.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -23,9 +24,9 @@ namespace HR.LeaveManagement.Api.Controllers
 
         // GET: api/<LeaveAllocationsController>
         [HttpGet]
-        public async Task<ActionResult<List<LeaveAllocationDto>>> Get()
+        public async Task<ActionResult<List<LeaveAllocationDto>>> Get(bool isLoggedInUser = false)
         {
-            var leaveAllocations = await _mediator.Send(new GetLeaveAllocationListRequest());
+            var leaveAllocations = await _mediator.Send(new GetLeaveAllocationListRequest() { IsLoggedInUser = isLoggedInUser });
             return Ok(leaveAllocations);
         }
 
@@ -39,7 +40,7 @@ namespace HR.LeaveManagement.Api.Controllers
 
         // POST api/<LeaveAllocationsController>
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] CreateLeaveAllocationDto leaveAllocation)
+        public async Task<ActionResult<BaseCommandResponse>> Post([FromBody] CreateLeaveAllocationDto leaveAllocation)
         {
             var command = new CreateLeaveAllocationCommand { LeaveAllocationDto = leaveAllocation };
             var response = await _mediator.Send(command);

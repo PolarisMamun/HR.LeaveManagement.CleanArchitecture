@@ -1,5 +1,6 @@
 ﻿using HR.LeaveManagement.MVC.Contracts;
 using HR.LeaveManagement.MVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -7,26 +8,29 @@ using System.Threading.Tasks;
 
 namespace HR.LeaveManagement.MVC.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class LeaveTypesController : Controller
     {
-        private readonly ILeaveTypeService _leaveTypeRepository;
+        private readonly ILeaveTypeService _leaveTypeService;
+        private readonly ILeaveAllocationService _leaveAllocationService;
 
-        public LeaveTypesController(ILeaveTypeService leaveTypeRepository)
+        public LeaveTypesController(ILeaveTypeService leaveTypeService, ILeaveAllocationService leaveAllocationService)
         {
-            this._leaveTypeRepository = leaveTypeRepository;
+            this._leaveTypeService = leaveTypeService;
+            this._leaveAllocationService = leaveAllocationService;
         }
 
         // GET: LeaveTypesController
         public async Task<ActionResult> Index()
         {
-            var model = await _leaveTypeRepository.GetLeaveTypes();
+            var model = await _leaveTypeService.GetLeaveTypes();
             return View(model);
         }
 
         // GET: LeaveTypesController/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            var model = await _leaveTypeRepository.GetLeaveTypeDetails(id);
+            var model = await _leaveTypeService.GetLeaveTypeDetails(id);
             return View(model);
         }
 
@@ -43,7 +47,7 @@ namespace HR.LeaveManagement.MVC.Controllers
         {
             try
             {
-                var response = await _leaveTypeRepository.CreateLeaveType(leaveType);
+                var response = await _leaveTypeService.CreateLeaveType(leaveType);
                 if (response.Success)
                 {
                     return RedirectToAction(nameof(Index));
@@ -61,7 +65,7 @@ namespace HR.LeaveManagement.MVC.Controllers
         // GET: LeaveTypesController/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
-            var model = await _leaveTypeRepository.GetLeaveTypeDetails(id);
+            var model = await _leaveTypeService.GetLeaveTypeDetails(id);
             return View(model);
         }
 
@@ -72,7 +76,7 @@ namespace HR.LeaveManagement.MVC.Controllers
         {
             try
             {
-                var response = await _leaveTypeRepository.UpdateLeaveType(id, leaveType);
+                var response = await _leaveTypeService.UpdateLeaveType(id, leaveType);
                 if (response.Success)
                 {
                     return RedirectToAction(nameof(Index));
@@ -93,12 +97,31 @@ namespace HR.LeaveManagement.MVC.Controllers
         {
             try
             {
-                var response = await _leaveTypeRepository.DeleteLeaveType(id);
+                var response = await _leaveTypeService.DeleteLeaveType(id);
                 if (response.Success)
                 {
                     return RedirectToAction(nameof(Index));
                 }
                 ModelState.AddModelError("", response.ValidationErrors);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+            return BadRequest();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Allocate(int id)
+        {
+            try
+            {
+                var resposne = await _leaveAllocationService.CreateLeaveAllocations(id);
+                if (resposne.Success)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
             }
             catch (Exception ex)
             {

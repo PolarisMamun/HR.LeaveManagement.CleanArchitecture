@@ -3,6 +3,7 @@ using HR.LeaveManagement.Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -38,6 +39,14 @@ namespace HR.LeaveManagement.Persistence.Repositories
                 .Include(q => q.LeaveType)
                 .ToListAsync();
 
+            return leaveRequest;
+        }
+
+        public async Task<List<LeaveRequest>> GetLeaveRequestWithDetails(string userId)
+        {
+            var leaveRequest = await _dbContext.LeaveRequests.Where(q => q.RequestingEmployeeId == userId)
+                .Include(q => q.LeaveTypeId)
+                .ToListAsync();
             return leaveRequest;
         }
     }
