@@ -60,4 +60,10 @@ namespace HR.LeaveManagement.MVC.Models
 
         public List<LeaveRequestVM> LeaveRequests { get; set; }
     }
+
+    public class EmployeeLeaveRequestViewVM
+    {
+        public List<LeaveAllocationVM> LeaveAllocations { get; set; }
+        public List<LeaveRequestVM> LeaveRequests { get; set; }
+    }
 }

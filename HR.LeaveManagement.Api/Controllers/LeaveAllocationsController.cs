@@ -3,6 +3,7 @@ using HR.LeaveManagement.Application.Features.LeaveAllocations.Requests.Commands
 using HR.LeaveManagement.Application.Features.LeaveAllocations.Requests.Queries;
 using HR.LeaveManagement.Application.Responses;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace HR.LeaveManagement.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class LeaveAllocationsController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -47,8 +49,8 @@ namespace HR.LeaveManagement.Api.Controllers
             return Ok(response);
         }
 
-        // PUT api/<LeaveAllocationsController>
-        [HttpPut("{id}")]
+        // PUT api/<LeaveAllocationsController>/5
+        [HttpPut]
         public async Task<ActionResult> Put([FromBody] UpdateLeaveAllocationDto leaveAllocation)
         {
             var command = new UpdateLeaveAllocationCommand { LeaveAllocationDto = leaveAllocation };

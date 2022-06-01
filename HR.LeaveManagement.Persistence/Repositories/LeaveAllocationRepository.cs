@@ -21,7 +21,7 @@ namespace HR.LeaveManagement.Persistence.Repositories
         public async Task AddAllocations(List<LeaveAllocation> allocations)
         {
             await _dbcontext.AddRangeAsync(allocations);
-            await _dbcontext.SaveChangesAsync();
+            //await _dbcontext.SaveChangesAsync();
         }
 
         public async Task<bool> AllocationExists(string userId, int leaveTypeId, int period)
@@ -40,7 +40,7 @@ namespace HR.LeaveManagement.Persistence.Repositories
             return leaveAllocation;
         }
 
-        public async Task<List<LeaveAllocation>> GetLeaveAllocationWithDetails()
+        public async Task<List<LeaveAllocation>> GetLeaveAllocationsWithDetails()
         {
             var leaveAllocations = await _dbcontext.LeaveAllocations
                 .Include(q => q.LeaveType)
@@ -48,7 +48,7 @@ namespace HR.LeaveManagement.Persistence.Repositories
             return leaveAllocations;
         }
 
-        public async Task<List<LeaveAllocation>> GetLeaveAllocationWithDetails(string userId)
+        public async Task<List<LeaveAllocation>> GetLeaveAllocationsWithDetails(string userId)
         {
             var leaveAllocations = await _dbcontext.LeaveAllocations.Where(q => q.EmployeeId == userId)
                 .Include(q => q.LeaveType)

@@ -30,7 +30,7 @@ namespace HR.LeaveManagement.MVC.Controllers
                     return LocalRedirect(returnUrl);
             }
 
-            ModelState.AddModelError("", "Log In Attempt Failed. Please try again");
+            ModelState.AddModelError("", "Log In Attempt Failed. Please try again.");
             return View(login);
         }
 

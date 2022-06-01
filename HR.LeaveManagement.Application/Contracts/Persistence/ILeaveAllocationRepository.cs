@@ -10,9 +10,9 @@ namespace HR.LeaveManagement.Application.Contracts.Persistence
     {
         Task<LeaveAllocation> GetLeaveAllocationWithDetails(int id);
 
-        Task<List<LeaveAllocation>> GetLeaveAllocationWithDetails();
+        Task<List<LeaveAllocation>> GetLeaveAllocationsWithDetails();
 
-        Task<List<LeaveAllocation>> GetLeaveAllocationWithDetails(string userId);
+        Task<List<LeaveAllocation>> GetLeaveAllocationsWithDetails(string userId);
 
         Task<bool> AllocationExists(string userId, int leaveTypeId, int period);
 

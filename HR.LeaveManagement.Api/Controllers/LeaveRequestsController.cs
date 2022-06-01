@@ -58,7 +58,7 @@ namespace HR.LeaveManagement.Api.Controllers
             return NoContent();
         }
 
-        //PUT api/<LeaveRequestsController>/changeapproval
+        //PUT api/<LeaveRequestsController>/changeapproval/5
 
         [HttpPut("changeapproval/{id}")]
         public async Task<ActionResult> ChangeApproval(int id, [FromBody] ChangeLeaveRequestApprovalDto changeLeaveRequestApproval)

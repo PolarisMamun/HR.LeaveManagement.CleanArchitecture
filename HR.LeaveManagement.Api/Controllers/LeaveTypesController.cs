@@ -19,10 +19,12 @@ namespace HR.LeaveManagement.Api.Controllers
     public class LeaveTypesController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public LeaveTypesController(IMediator mediator)
+        public LeaveTypesController(IMediator mediator, IHttpContextAccessor httpContextAccessor)
         {
             _mediator = mediator;
+            this._httpContextAccessor = httpContextAccessor;
         }
 
         // GET: api/<LeaveTypesController>
@@ -48,6 +50,7 @@ namespace HR.LeaveManagement.Api.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<BaseCommandResponse>> Post([FromBody] CreateLeaveTypeDto leaveType)
         {
+            var user = _httpContextAccessor.HttpContext.User;
             var command = new CreateLeaveTypeCommand { LeaveTypeDto = leaveType };
             var response = await _mediator.Send(command);
             return Ok(response);

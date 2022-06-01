@@ -6,8 +6,9 @@ namespace HR.LeaveManagement.MVC.Services.Base
 {
     public class BaseHttpService
     {
-        protected readonly IClient _client;
         protected readonly ILocalStorageService _localStorage;
+        protected IClient _client;
+        
 
         public BaseHttpService(IClient client, ILocalStorageService localStorage)
         {
@@ -34,7 +35,8 @@ namespace HR.LeaveManagement.MVC.Services.Base
         protected void AddBearerToken()
         {
             if (_localStorage.Exists("token"))
-                _client.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _localStorage.GetStorageValue<string>("token"));
+                _client.HttpClient.DefaultRequestHeaders.Authorization = 
+                    new AuthenticationHeaderValue("Bearer", _localStorage.GetStorageValue<string>("token"));
         }
     }
 }

@@ -91,5 +91,20 @@ namespace HR.LeaveManagement.MVC.Services
             var leaveRequest = await _client.LeaveRequestsGETAsync(id);
             return _mapper.Map<LeaveRequestVM>(leaveRequest);
         }
+
+        public async Task<EmployeeLeaveRequestViewVM> GetUserLeaveRequests()
+        {
+            //throw new System.NotImplementedException();
+            AddBearerToken();
+            var leaveRequests = await _client.LeaveRequestsAllAsync(isLoggedInUser: true);
+            var allocations = await _client.LeaveAllocationsAllAsync(isLoggedInUser: true);
+            var model = new EmployeeLeaveRequestViewVM
+            {
+                LeaveAllocations = _mapper.Map<List<LeaveAllocationVM>>(allocations),
+                LeaveRequests = _mapper.Map<List<LeaveRequestVM>>(leaveRequests)
+            };
+
+            return model;
+        }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using Hanssens.Net;
-using HR.LeaveManagement.MVC.Contracts;
+
 using System.Collections.Generic;
 
-namespace HR.LeaveManagement.MVC.Services
+namespace HR.LeaveManagement.MVC.Contracts
 {
     public class LocalStorageService : ILocalStorageService
     {

@@ -1,7 +1,6 @@
 using HR.LeaveManagement.Application;
-using HR.LeaveManagement.Identity;
-using HR.LeaveManagement.Infrastructure;
 using HR.LeaveManagement.Persistence;
+using HR.LeaveManagement.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -39,11 +38,7 @@ namespace HR.LeaveManagement.Api
             services.ConfigureIdentityServices(Configuration);
 
             services.AddControllers();
-            /*services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HR LeaveManagement Api", Version = "v1" });
-            });
-            */
+
             services.AddCors(o =>
             {
                 o.AddPolicy("CorsPolicy",
@@ -60,6 +55,9 @@ namespace HR.LeaveManagement.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            //app.UseMiddleware<ExceptionMiddleware>();
+
             app.UseAuthentication();
 
             app.UseSwagger();
@@ -85,7 +83,7 @@ namespace HR.LeaveManagement.Api
             {
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Description = @"JWT Authorization header using the Bear scheme.\r\n\r\n
+                    Description = @"JWT Authorization header using the Bearer scheme.\r\n\r\n
                         Enter 'Bearer' [space] and then your token in the text input below.
                         \r\n\r\nExample: 'Bearer 12345abcdef'",
                     Name = "Authorization",
@@ -114,7 +112,7 @@ namespace HR.LeaveManagement.Api
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "HR LeaveManagement Api",
+                    Title = "HR Leave Management Api",
                 });
             });
         }

@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using HR.LeaveManagement.Application.Contracts.Identity;
-using HR.LeaveManagement.Application.DTOs.LeaveRequest;
 using HR.LeaveManagement.Domain;
 using Microsoft.AspNetCore.Http;
 using HR.LeaveManagement.Application.Constants;
@@ -44,7 +43,7 @@ namespace HR.LeaveManagement.Application.Features.LeaveAllocations.Handlers.Quer
             {
                 var userId = _httpContextAccessor.HttpContext.User.FindFirst(
                     q => q.Type == CustomClaimTypes.Uid)?.Value;
-                leaveAllocations = await _leaveAllocationRepository.GetLeaveAllocationWithDetails(userId);
+                leaveAllocations = await _leaveAllocationRepository.GetLeaveAllocationsWithDetails(userId);
 
                 var employee = await _userService.GetEmployee(userId);
                 allocations = _mapper.Map<List<LeaveAllocationDto>>(leaveAllocations);
@@ -56,7 +55,7 @@ namespace HR.LeaveManagement.Application.Features.LeaveAllocations.Handlers.Quer
             }
             else
             {
-                leaveAllocations = await _leaveAllocationRepository.GetLeaveAllocationWithDetails();
+                leaveAllocations = await _leaveAllocationRepository.GetLeaveAllocationsWithDetails();
                 allocations = _mapper.Map<List<LeaveAllocationDto>>(leaveAllocations);
 
                 foreach (var alloc in allocations)

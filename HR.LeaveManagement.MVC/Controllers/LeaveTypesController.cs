@@ -108,7 +108,8 @@ namespace HR.LeaveManagement.MVC.Controllers
             {
                 ModelState.AddModelError("", ex.Message);
             }
-            return BadRequest();
+
+            return View();
         }
 
         [HttpPost]
@@ -117,8 +118,8 @@ namespace HR.LeaveManagement.MVC.Controllers
         {
             try
             {
-                var resposne = await _leaveAllocationService.CreateLeaveAllocations(id);
-                if (resposne.Success)
+                var response = await _leaveAllocationService.CreateLeaveAllocations(id);
+                if (response.Success)
                 {
                     return RedirectToAction(nameof(Index));
                 }

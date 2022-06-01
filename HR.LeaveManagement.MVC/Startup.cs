@@ -32,7 +32,11 @@ namespace HR.LeaveManagement.MVC
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+                {
+                    options.LoginPath = new PathString("/users/login");
+                });
 
             services.AddTransient<IAuthenticationService, AuthenticationService>();
 

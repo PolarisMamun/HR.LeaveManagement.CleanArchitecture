@@ -2,6 +2,7 @@
 using HR.LeaveManagement.Application.DTOs;
 using HR.LeaveManagement.Application.DTOs.LeaveRequest;
 using HR.LeaveManagement.Application.Features.LeaveRequests.Requests.Queries;
+using HR.LeaveManagement.Application.Features.LeaveTypes.Requests;
 using HR.LeaveManagement.Application.Features.LeaveTypes.Requests.Queries;
 using HR.LeaveManagement.Application.Contracts.Persistence;
 using MediatR;
@@ -10,9 +11,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using HR.LeaveManagement.Application.Contracts.Identity;
 using HR.LeaveManagement.Domain;
+using HR.LeaveManagement.Application.Contracts.Identity;
+using Microsoft.AspNetCore.Http;
 using HR.LeaveManagement.Application.Constants;
 
 namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Queries
@@ -44,7 +45,7 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Queries
             {
                 var userId = _httpContextAccessor.HttpContext.User.FindFirst(
                     q => q.Type == CustomClaimTypes.Uid)?.Value;
-                leaveRequests = await _leaveRequestRepository.GetLeaveRequestWithDetails(userId);
+                leaveRequests = await _leaveRequestRepository.GetLeaveRequestsWithDetails(userId);
 
                 var employee = await _userService.GetEmployee(userId);
                 requests = _mapper.Map<List<LeaveRequestListDto>>(leaveRequests);
@@ -56,8 +57,8 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Queries
             }
             else
             {
-                var leaveRequest = await _leaveRequestRepository.GetLeaveRequestWithDetails();
-                requests = _mapper.Map<List<LeaveRequestListDto>>(leaveRequest);
+                leaveRequests = await _leaveRequestRepository.GetLeaveRequestsWithDetails();
+                requests = _mapper.Map<List<LeaveRequestListDto>>(leaveRequests);
 
                 foreach (var req in requests)
                 {
