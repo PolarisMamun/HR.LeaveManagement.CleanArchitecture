@@ -62,7 +62,7 @@ namespace HR.LeaveManagement.Api
             app.UseAuthentication();
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HR.LeaveManagement.Api v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v3/swagger.json", "HR.LeaveManagement.Api v3"));
 
             app.UseHttpsRedirection();
 
@@ -110,9 +110,9 @@ namespace HR.LeaveManagement.Api
                         new List<string>()
                     }
                 });
-                c.SwaggerDoc("v1", new OpenApiInfo
+                c.SwaggerDoc("v3", new OpenApiInfo
                 {
-                    Version = "v2",
+                    Version = "v3",
                     Title = "HR Leave Management Api",
                 });
             });

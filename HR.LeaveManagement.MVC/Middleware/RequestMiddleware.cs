@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Newtonsoft.Json.Linq;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace HR.LeaveManagement.MVC.Middleware
@@ -19,7 +20,7 @@ namespace HR.LeaveManagement.MVC.Middleware
 
         public RequestMiddleware(RequestDelegate next, ILocalStorageService localStorageService)
         {
-            this._next = next;
+            _next = next;
             this._localStorageService = localStorageService;
         }
 
@@ -45,17 +46,20 @@ namespace HR.LeaveManagement.MVC.Middleware
                         }
                     }
 
-                    if (!tokenIsValid || !tokenExists)
+                    if (tokenIsValid == false || tokenExists == false)
                     {
                         await SignOutAndRedirect(httpContext);
                         return;
                     }
-
-                    if (authAttr.Roles.Contains("Administrator") && httpContext.User.IsInRole("Administrator") == false)
+                    if (authAttr.Roles != null)
                     {
-                        var path = $"/home/NotAuthorized";
-                        httpContext.Response.Redirect(path);
-                        return;
+                        var userRole = httpContext.User.FindFirst(ClaimTypes.Role)?.Value;
+                        if (authAttr.Roles.Contains(userRole) == false)
+                        {
+                            var path = $"/home/notauthorized";
+                            httpContext.Response.Redirect(path);
+                            return;
+                        }
                     }
                 }
                 await _next(httpContext);
@@ -66,7 +70,7 @@ namespace HR.LeaveManagement.MVC.Middleware
             }
         }
 
-        private async Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             switch (exception)
             {
@@ -81,7 +85,7 @@ namespace HR.LeaveManagement.MVC.Middleware
             }
         }
 
-        private async Task SignOutAndRedirect(HttpContext httpContext)
+        private static async Task SignOutAndRedirect(HttpContext httpContext)
         {
             await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             var path = $"/users/login";

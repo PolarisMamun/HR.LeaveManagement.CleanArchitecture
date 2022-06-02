@@ -4,13 +4,12 @@
     ViewData["Title"] = "Details";
     string className;
     string headingText;
-
-    if(Model.Approved == null)
+    if (Model.Approved == null)
     {
         className = "warning";
         headingText = "Pending Approval";
     }
-    else if(Model.Approved == null)
+    else if (Model.Approved == true)
     {
         className = "success";
         headingText = "Approved";
@@ -23,52 +22,49 @@
 }
 
 <div class="alert alert-@className" role="alert">
-    <h4 class ="alert-heading">@headingText</h4>
+    <h4 class="alert-heading">@headingText</h4>
     <p>
-        <strong>Employee Name:</strong> @Model.Employee.Firstname @Model.Employee.Lastname <br />
+        <strong>Employee name:</strong>  @Model.Employee.Firstname @Model.Employee.Lastname <br />
     </p>
-    <hr />
+    <hr/>
     <p>
         Date Requested - @Html.DisplayFor(model => model.DateRequested)
     </p>
 </div>
 
 
-<h1>Details</h1>
-
 <div>
-    <h4>LeaveRequestVM</h4>
+
     <hr />
     <dl class="row">
-        
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StartDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StartDate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.EndDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.EndDate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.LeaveType)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.LeaveType.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.RequestComments)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.RequestComments)
         </dd>
     </dl>
 </div>
 <div>
-    @if(Model.Approved == null)
+    @if (Model.Approved == null)
     {
         <form method="post" asp-action="ApproveRequest">
             <input name="id" type="hidden" value="@Model.Id"/>
@@ -78,13 +74,15 @@
             </button>
         </form>
         <form method="post" asp-action="ApproveRequest" asp-route-id="@Model.Id">
-            <input name="id" type="hidden" value="@Model.Id"/>
-            <input name="approved" type="hidden" value="false"/>
+            <input name="id" type="hidden" value="@Model.Id" />
+            <input name="approved" type="hidden" value="false" />
             <button class="btn btn-danger">
                 Reject
             </button>
         </form>
+
     }
+
     <a class="btn btn-outline-secondary" asp-action="Index">
         Back to List
     </a>

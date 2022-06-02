@@ -48,7 +48,7 @@ namespace HR.LeaveManagement.Api.Controllers
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        [Authorize(Roles = Roles.Administrator)]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<BaseCommandResponse>> Post([FromBody] CreateLeaveTypeDto leaveType)
         {
             var user = _httpContextAccessor.HttpContext.User;
@@ -62,7 +62,7 @@ namespace HR.LeaveManagement.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        [Authorize(Roles = Roles.Administrator)]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> Put([FromBody] LeaveTypeDto leaveType)
         {
             var command = new UpdateLeaveTypeCommand { LeaveTypeDto = leaveType };

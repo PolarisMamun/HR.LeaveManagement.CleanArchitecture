@@ -20,7 +20,6 @@ namespace HR.LeaveManagement.MVC
                 .ForMember(q => q.StartDate, opt => opt.MapFrom(x => x.StartDate.DateTime))
                 .ForMember(q => q.EndDate, opt => opt.MapFrom(x => x.EndDate.DateTime))
                 .ReverseMap();
-
             CreateMap<LeaveTypeDto, LeaveTypeVM>().ReverseMap();
             CreateMap<LeaveAllocationDto, LeaveAllocationVM>().ReverseMap();
             CreateMap<RegisterVM, RegistrationRequest>().ReverseMap();

@@ -58,9 +58,9 @@ namespace HR.LeaveManagement.Application.Features.LeaveAllocations.Handlers.Quer
                 leaveAllocations = await _unitOfWork.LeaveAllocationRepository.GetLeaveAllocationsWithDetails();
                 allocations = _mapper.Map<List<LeaveAllocationDto>>(leaveAllocations);
 
-                foreach (var alloc in allocations)
+                foreach (var req in allocations)
                 {
-                    alloc.Employee = await _userService.GetEmployee(alloc.EmployeeId);
+                    req.Employee = await _userService.GetEmployee(req.EmployeeId);
                 }
             }
 
