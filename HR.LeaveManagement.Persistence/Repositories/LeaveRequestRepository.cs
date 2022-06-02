@@ -22,9 +22,7 @@ namespace HR.LeaveManagement.Persistence.Repositories
         {
             leaveRequest.Approved = ApprovalStatus;
             _dbContext.Entry(leaveRequest).State = EntityState.Modified;
-            //await _dbContext.SaveChangesAsync();
         }
-
 
         public async Task<List<LeaveRequest>> GetLeaveRequestsWithDetails()
         {
@@ -36,11 +34,12 @@ namespace HR.LeaveManagement.Persistence.Repositories
 
         public async Task<List<LeaveRequest>> GetLeaveRequestsWithDetails(string userId)
         {
-            var leaveRequests = await _dbContext.LeaveRequests.Where(q=> q.RequestingEmployeeId == userId)
+            var leaveRequests = await _dbContext.LeaveRequests.Where(q => q.RequestingEmployeeId == userId)
                 .Include(q => q.LeaveType)
                 .ToListAsync();
             return leaveRequests;
         }
+
         public async Task<LeaveRequest> GetLeaveRequestWithDetails(int id)
         {
             var leaveRequest = await _dbContext.LeaveRequests

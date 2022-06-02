@@ -18,17 +18,17 @@ namespace HR.LeaveManagement.Application.Features.LeaveAllocations.Handlers.Quer
 {
     public class GetLeaveAllocationListRequestHandler : IRequestHandler<GetLeaveAllocationListRequest, List<LeaveAllocationDto>>
     {
-        private readonly ILeaveAllocationRepository _leaveAllocationRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserService _userService;
 
-        public GetLeaveAllocationListRequestHandler(ILeaveAllocationRepository leaveAllocationRepository,
+        public GetLeaveAllocationListRequestHandler(IUnitOfWork unitOfWork,
             IMapper mapper,
             IHttpContextAccessor httpContextAccessor,
             IUserService userService)
         {
-            _leaveAllocationRepository = leaveAllocationRepository;
+            this._unitOfWork = unitOfWork;
             _mapper = mapper;
             this._httpContextAccessor = httpContextAccessor;
             this._userService = userService;
@@ -43,7 +43,7 @@ namespace HR.LeaveManagement.Application.Features.LeaveAllocations.Handlers.Quer
             {
                 var userId = _httpContextAccessor.HttpContext.User.FindFirst(
                     q => q.Type == CustomClaimTypes.Uid)?.Value;
-                leaveAllocations = await _leaveAllocationRepository.GetLeaveAllocationsWithDetails(userId);
+                leaveAllocations = await _unitOfWork.LeaveAllocationRepository.GetLeaveAllocationsWithDetails(userId);
 
                 var employee = await _userService.GetEmployee(userId);
                 allocations = _mapper.Map<List<LeaveAllocationDto>>(leaveAllocations);
@@ -55,7 +55,7 @@ namespace HR.LeaveManagement.Application.Features.LeaveAllocations.Handlers.Quer
             }
             else
             {
-                leaveAllocations = await _leaveAllocationRepository.GetLeaveAllocationsWithDetails();
+                leaveAllocations = await _unitOfWork.LeaveAllocationRepository.GetLeaveAllocationsWithDetails();
                 allocations = _mapper.Map<List<LeaveAllocationDto>>(leaveAllocations);
 
                 foreach (var alloc in allocations)
