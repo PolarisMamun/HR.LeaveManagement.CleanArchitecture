@@ -32,6 +32,9 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Command
         {
             var leaveRequest = await _unitOfWork.LeaveRequestRepository.Get(request.Id);
 
+            if (leaveRequest is null)
+                throw new NotFoundException(nameof(leaveRequest), request.Id);
+
             if (request.LeaveRequestDto != null)
             {
                 var validator = new UpdateLeaveRequestDtoValidator(_unitOfWork.LeaveTypeRepository);
@@ -39,6 +42,7 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Command
 
                 if (validationResult.IsValid == false)
                     throw new ValidationException(validationResult);
+
                 _mapper.Map(request.LeaveRequestDto, leaveRequest);
 
                 await _unitOfWork.LeaveRequestRepository.Update(leaveRequest);
@@ -47,6 +51,7 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Command
             else if (request.ChangeLeaveRequestApprovalDto != null)
             {
                 await _unitOfWork.LeaveRequestRepository.ChangeApprovalStatus(leaveRequest, request.ChangeLeaveRequestApprovalDto.Approved);
+
                 if (request.ChangeLeaveRequestApprovalDto.Approved)
                 {
                     var allocation = await _unitOfWork.LeaveAllocationRepository.GetUserAllocations(leaveRequest.RequestingEmployeeId, leaveRequest.LeaveTypeId);

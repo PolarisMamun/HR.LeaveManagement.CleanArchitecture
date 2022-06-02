@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HR.LeaveManagement.Application.Constants;
 using HR.LeaveManagement.MVC.Contracts;
 using HR.LeaveManagement.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -61,7 +62,7 @@ namespace HR.LeaveManagement.MVC.Controllers
             return View(leaveRequest);
         }
 
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = Roles.Administrator)]
         public async Task<ActionResult> Index()
         {
             var model = await _leaveRequestService.GetAdminLeaveRequestList();
@@ -77,7 +78,7 @@ namespace HR.LeaveManagement.MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = Roles.Administrator)]
         public async Task<ActionResult> ApproveRequest(int id, bool approved)
         {
             try

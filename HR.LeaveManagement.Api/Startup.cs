@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HR.LeaveManagement.Api.Middleware;
 
 namespace HR.LeaveManagement.Api
 {
@@ -56,7 +57,7 @@ namespace HR.LeaveManagement.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseMiddleware<ExceptionMiddleware>();
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseAuthentication();
 
@@ -111,7 +112,7 @@ namespace HR.LeaveManagement.Api
                 });
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Version = "v1",
+                    Version = "v2",
                     Title = "HR Leave Management Api",
                 });
             });

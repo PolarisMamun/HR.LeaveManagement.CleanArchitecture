@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using HR.LeaveManagement.Application.Constants;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -17,14 +18,14 @@ namespace HR.LeaveManagement.Identity.Configurations
                 new IdentityRole
                 {
                     Id = "97ebdb83-cb6e-464b-8b9b-20265513d8bb",
-                    Name = "Employee",
-                    NormalizedName = "EMPLOYEE"
+                    Name = Roles.User,
+                    NormalizedName = Roles.User.ToUpper()
                 },
                 new IdentityRole
                 {
                     Id = "ec94eb22-7c85-4fe3-82b5-d99c4a031f00",
-                    Name = "Administrator",
-                    NormalizedName = "ADMINISTRATOR"
+                    Name = Roles.Administrator,
+                    NormalizedName = Roles.Administrator.ToUpper()
                 }
             );
         }
